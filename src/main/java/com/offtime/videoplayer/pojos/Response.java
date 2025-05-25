@@ -1,0 +1,37 @@
+package com.offtime.videoplayer.pojos;
+
+import java.time.LocalDateTime;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class Response<T> {
+	private Boolean success;
+    private T data;
+    private String message;
+    private int status;
+    private LocalDateTime timestamp;
+    
+    public Response() {
+        this.timestamp = LocalDateTime.now();
+    }
+    
+    public Response(Boolean success, T data, int status) {
+        this.success = success;
+        this.data = data;
+        this.status = status;
+        this.timestamp = LocalDateTime.now();
+    }
+    
+    public Response(Boolean success, String message, int status) {
+        this.success = success;
+        this.message = message;
+        this.status = status;
+        this.timestamp = LocalDateTime.now();
+    }
+     
+}
