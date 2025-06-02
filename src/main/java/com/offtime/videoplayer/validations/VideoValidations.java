@@ -13,21 +13,20 @@ import com.offtime.videoplayer.utils.PropertyLoader;
 @Component
 public class VideoValidations {
 
-	private static final Logger logger = LoggerFactory.getLogger(VideoValidations.class);
+    private static final Logger logger = LoggerFactory.getLogger(VideoValidations.class);
 
     @Autowired
     PropertyLoader propertyLoader;
-    
-    private static final String YOUTUBE_URL_REGEX =
-            "^(https?://)?(www\\.)?(youtube\\.com|youtu\\.be)/(watch\\?v=|shorts/)?[\\w-]{11}$";
 
-    private static final Pattern YOUTUBE_URL_PATTERN = Pattern.compile(YOUTUBE_URL_REGEX);
-    
+    // Only allow embedded YouTube URLs: https://www.youtube.com/embed/VIDEO_ID
+    private static final String YOUTUBE_EMBED_URL_REGEX =
+            "^https://www\\.youtube\\.com/embed/[\\w-]{11}$";
+
+    private static final Pattern YOUTUBE_EMBED_URL_PATTERN = Pattern.compile(YOUTUBE_EMBED_URL_REGEX);
+
     public void validateVideoUrl(String url) {
-    	if (url == null || url.trim().isEmpty() || YOUTUBE_URL_PATTERN.matcher(url).matches() == false)
-    	{
-    		throw new InvalidVideoException(
-                    String.format("Invalid youtube url."));
-    	}
+        if (url == null || url.trim().isEmpty() || !YOUTUBE_EMBED_URL_PATTERN.matcher(url).matches()) {
+            throw new InvalidVideoException("Invalid YouTube embed URL. Please provide a valid embedded video link.");
+        }
     }
 }

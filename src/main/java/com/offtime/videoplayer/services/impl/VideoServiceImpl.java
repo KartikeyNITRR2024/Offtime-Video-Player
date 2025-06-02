@@ -140,6 +140,10 @@ public class VideoServiceImpl implements VideoService {
 		{
 		   video.setLastStopTime(videoDto.getLastStopTime());
 		}
+		if(videoDto.getVideoName() != null)
+		{
+			video.setVideoName(videoDto.getVideoName());
+		}
 		return dtoEntityConverter.videoToDto(videoRepository.save(video));
 	}
 	

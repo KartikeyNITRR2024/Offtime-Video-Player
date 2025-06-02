@@ -16,6 +16,7 @@ public class DtoEntityConverter {
 	{
 		VideoDto videoDto = new VideoDto();
 		videoDto.setId(video.getId());
+		videoDto.setVideoName(video.getVideoName());
 		videoDto.setVideoUrl(video.getVideoUrl());
 		videoDto.setLastStopTime(video.getLastStopTime());
 		return videoDto;
@@ -25,6 +26,7 @@ public class DtoEntityConverter {
 	{
 		Video video = new Video();
 		video.setId(videoDto.getId());
+		video.setVideoName(videoDto.getVideoName());
 		video.setVideoUrl(videoDto.getVideoUrl());
 		video.setLastStopTime(videoDto.getLastStopTime());
 		video.setUser(user);

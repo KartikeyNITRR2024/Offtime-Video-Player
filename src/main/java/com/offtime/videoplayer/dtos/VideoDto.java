@@ -11,6 +11,7 @@ import lombok.ToString;
 @ToString
 public class VideoDto {
 	private Long id;
+	private String videoName;
     private String videoUrl;
     private Long lastStopTime;
     private User user;

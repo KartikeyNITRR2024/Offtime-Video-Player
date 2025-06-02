@@ -15,6 +15,9 @@ public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Column(name = "videoname", nullable = false)
+    private String videoName;
 
     @Column(name = "videourl", nullable = false)
     private String videoUrl;
