@@ -1,9 +1,11 @@
-package com.offtime.videoplayer.controllers;
+package com.offtime.videoplayer.controllers.apicontrollers;
 
 import com.offtime.videoplayer.dtos.VideoDto;
 import com.offtime.videoplayer.pojos.Response;
 import com.offtime.videoplayer.services.VideoService;
 import com.offtime.videoplayer.validations.UniversalValidations;
+
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +64,22 @@ public class VideoController {
         logger.info("Setting current video ID {} for user: {}", videoDto.getId(), uniqueCode);
         VideoDto updatedVideo = videoService.updateCurrentVideo(videoDto, uniqueCode);
         return ResponseEntity.ok(new Response<>(true, updatedVideo, 200));
+    }
+    
+    @GetMapping("/{uniquePathId}/{uniqueCode}/getAllVideos")
+    public ResponseEntity<Response<List<VideoDto>>> getAllVideos(@PathVariable Integer uniquePathId, @PathVariable String uniqueCode) {
+        universalValidations.validateUniqueId(uniquePathId);
+        logger.info("Get Videos for user unique code: {}", uniqueCode);
+        List<VideoDto> videoDtos = videoService.getAllVideoByUser(uniqueCode);
+        return ResponseEntity.ok(new Response<>(true, videoDtos, 200));
+    }
+    
+    @GetMapping("/{uniquePathId}/{uniqueCode}/getCurrentVideo")
+    public ResponseEntity<Response<VideoDto>> getCurrentVideo(@PathVariable Integer uniquePathId, @PathVariable String uniqueCode) {
+        universalValidations.validateUniqueId(uniquePathId);
+        logger.info("Get Videos for user unique code: {}", uniqueCode);
+        VideoDto currentvideoDto = videoService.getCurrentVideoByUser(uniqueCode);
+        return ResponseEntity.ok(new Response<>(true, currentvideoDto, 200));
     }
 
     @GetMapping("/{uniquePathId}/{uniqueCode}/count")

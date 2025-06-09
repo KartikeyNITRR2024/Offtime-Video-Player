@@ -14,6 +14,10 @@ import com.offtime.videoplayer.entities.Video;
 public class DtoEntityConverter {
 	public VideoDto videoToDto(Video video)
 	{
+		if(video == null)
+		{
+			return null;
+		}
 		VideoDto videoDto = new VideoDto();
 		videoDto.setId(video.getId());
 		videoDto.setVideoName(video.getVideoName());
@@ -24,6 +28,10 @@ public class DtoEntityConverter {
 	
 	public Video dtoToVideo(VideoDto videoDto, User user)
 	{
+		if(videoDto == null)
+		{
+			return null;
+		}
 		Video video = new Video();
 		video.setId(videoDto.getId());
 		video.setVideoName(videoDto.getVideoName());
@@ -35,6 +43,10 @@ public class DtoEntityConverter {
 	
 	public User dtoToUser(UserDto userDto)
     {
+		if(userDto == null)
+		{
+			return null;
+		}
     	User user = new User();
     	user.setId(userDto.getId());
     	user.setLastUsedDateTime(userDto.getLastUsedDateTime());
@@ -44,6 +56,10 @@ public class DtoEntityConverter {
     
     public UserDto userToDto(User user)
     {
+    	if(user == null)
+		{
+			return null;
+		}
     	UserDto userDto = new UserDto();
     	userDto.setLastUsedDateTime(user.getLastUsedDateTime());
     	userDto.setUniqueCode(user.getUniqueCode());

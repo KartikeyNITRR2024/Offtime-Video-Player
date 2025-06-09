@@ -1,4 +1,4 @@
-package com.offtime.videoplayer.controllers;
+package com.offtime.videoplayer.controllers.apicontrollers;
 
 import com.offtime.videoplayer.pojos.Response;
 import com.offtime.videoplayer.validations.UniversalValidations;
@@ -20,11 +20,11 @@ public class StatusChecker {
     private static final Logger logger = LoggerFactory.getLogger(StatusChecker.class);
 
     @Autowired
-    UniversalValidations UniversalValidations;
+    UniversalValidations universalValidations;
 
     @GetMapping("/{uniqueId}")
     public ResponseEntity<Response<Boolean>> getStatus(@PathVariable("uniqueId") Integer pathUniqueId) {
-        UniversalValidations.validateUniqueId(pathUniqueId);
+        universalValidations.validateUniqueId(pathUniqueId);
         Response<Boolean> response = new Response<>(true, Boolean.TRUE, 200);
         return ResponseEntity.ok(response);
     }

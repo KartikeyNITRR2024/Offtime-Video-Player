@@ -1,5 +1,6 @@
 package com.offtime.videoplayer.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.offtime.videoplayer.dtos.VideoDto;
@@ -23,5 +24,9 @@ public interface VideoService {
 	long countVideosByUser(String uniqueCode);
 
 	long countVideosByUserId(Long userId);
+
+	List<VideoDto> getAllVideoByUser(String uniqueCode);
+
+	VideoDto getCurrentVideoByUser(String uniqueCode);
 
 }

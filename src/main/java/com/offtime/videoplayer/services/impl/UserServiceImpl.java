@@ -1,9 +1,7 @@
 package com.offtime.videoplayer.services.impl;
 
-import com.offtime.videoplayer.controllers.UserController;
 import com.offtime.videoplayer.dtos.UserDto;
 import com.offtime.videoplayer.entities.User;
-import com.offtime.videoplayer.entities.Video;
 import com.offtime.videoplayer.exceptions.InvalidUserException;
 import com.offtime.videoplayer.repos.UserRepository;
 import com.offtime.videoplayer.services.UserService;

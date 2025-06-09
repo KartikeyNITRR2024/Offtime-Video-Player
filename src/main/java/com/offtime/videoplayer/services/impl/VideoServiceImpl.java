@@ -1,5 +1,6 @@
 package com.offtime.videoplayer.services.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -8,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.offtime.videoplayer.controllers.VideoController;
+import com.offtime.videoplayer.controllers.apicontrollers.VideoController;
 import com.offtime.videoplayer.dtos.VideoDto;
 import com.offtime.videoplayer.entities.User;
 import com.offtime.videoplayer.entities.Video;
@@ -84,7 +85,7 @@ public class VideoServiceImpl implements VideoService {
 			throw new InvalidUserException(
 	                String.format("Invalid user: %s",uniqueCode));
 		}
-		if(user.getCurrentVideo().getId() == videoDto.getId())
+		if(user.getCurrentVideo()!=null && user.getCurrentVideo().getId() == videoDto.getId())
 		{
 			user.setCurrentVideo(null);
 			User updatedUser = userService.updateUser(user.getUniqueCode(), user);
@@ -148,8 +149,11 @@ public class VideoServiceImpl implements VideoService {
 	}
 	
 	@Override
+	@Transactional
 	public VideoDto updateCurrentVideo(VideoDto videoDto, String uniqueCode)
 	{
+		System.out.println(videoDto);
+		System.out.println(uniqueCode);
 		Optional<Video> vidOpt = videoRepository.findById(videoDto.getId());
 		if(vidOpt.isEmpty())
 		{
@@ -167,6 +171,34 @@ public class VideoServiceImpl implements VideoService {
 		User updatedUser = userService.updateUser(user.getUniqueCode(), user);
 		video.setUser(updatedUser);
 		return dtoEntityConverter.videoToDto(videoRepository.save(video));
+	}
+	
+	@Override
+	public List<VideoDto> getAllVideoByUser(String uniqueCode)
+	{
+		Optional<User> opt = userService.getUserByUniqueCode(uniqueCode);
+		if(opt.isEmpty())
+		{
+			throw new InvalidUserException(
+	                String.format("Invalid user: %s",uniqueCode));
+		}
+		User user = opt.get();
+		List<Video> videos = videoRepository.findByUserId(user.getId());
+	    return videos.stream().map(video -> dtoEntityConverter.videoToDto(videoRepository.save(video))).toList();
+	}
+	
+	@Override
+	public VideoDto getCurrentVideoByUser(String uniqueCode)
+	{
+		Optional<User> opt = userService.getUserByUniqueCode(uniqueCode);
+		if(opt.isEmpty())
+		{
+			throw new InvalidUserException(
+	                String.format("Invalid user: %s",uniqueCode));
+		}
+		User user = opt.get();
+		Video video = user.getCurrentVideo();
+	    return dtoEntityConverter.videoToDto(video);
 	}
 	
 	@Override

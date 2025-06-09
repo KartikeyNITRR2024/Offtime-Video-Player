@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
             HttpStatus.BAD_REQUEST.value()
         );
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
+    } 
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Response<Void>> handleGlobalException(Exception ex) {
