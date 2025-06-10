@@ -31,75 +31,123 @@ public class WebsocketServiceImpl implements WebsocketService {
 	{
 		WebsocketResponse<Object> response = null;
 		Object res = null;
-		if(request.getWorkType() == WorkType.USER)
-		{
-			UserDto userDto = null;
-			if(request.getWorkId() == WorkId.VALIDATECODE)
-			{
-				res = userService.isUniqueCodePresent(request.getUniqueCode());
-			}
-			else if(request.getWorkId() == WorkId.CREATEORUPDATECODE)
-			{
-				userDto = objectMapper.convertValue(request.getPayload(), UserDto.class);
-				if(userDto == null)
-		    	{
-		    		throw new InvalidWorkException(
-		                    String.format("Payload is empty."));
-		    	}
-				res = userService.createOrUpdateUser(userDto);
-			}
-			response = new WebsocketResponse<Object>(request, true, res);
-		}
-		else if(request.getWorkType() == WorkType.VIDEO)
+//		if(request.getWorkType() == WorkType.USER)
+//		{
+//			UserDto userDto = null;
+//			if(request.getWorkId() == WorkId.VALIDATECODE)
+//			{
+//				res = userService.isUniqueCodePresent(request.getUniqueCode());
+//			}
+//			else if(request.getWorkId() == WorkId.CREATEORUPDATECODE)
+//			{
+//				userDto = objectMapper.convertValue(request.getPayload(), UserDto.class);
+//				if(userDto == null)
+//		    	{
+//		    		throw new InvalidWorkException(
+//		                    String.format("Payload is empty."));
+//		    	}
+//				res = userService.createOrUpdateUser(userDto);
+//			}
+//			response = new WebsocketResponse<Object>(request, true, res);
+//		}
+//		else if(request.getWorkType() == WorkType.VIDEO)
+//		{
+//			VideoDto videoDto = null;
+//			if(request.getWorkId() == WorkId.SAVEVIDEO)
+//			{
+//				videoDto = objectMapper.convertValue(request.getPayload(), VideoDto.class);
+//				if(videoDto == null)
+//		    	{
+//		    		throw new InvalidWorkException(
+//		                    String.format("Payload is empty."));
+//		    	}
+//				res = videoService.addVideo(videoDto, request.getUniqueCode());
+//			}
+//			else if(request.getWorkId() == WorkId.SETCURRENTVIDEO)
+//			{
+//				videoDto = objectMapper.convertValue(request.getPayload(), VideoDto.class);
+//				if(videoDto == null)
+//		    	{
+//		    		throw new InvalidWorkException(
+//		                    String.format("Payload is empty."));
+//		    	}
+//				res = videoService.updateCurrentVideo(videoDto, request.getUniqueCode());
+//			}
+//			else if(request.getWorkId() == WorkId.UPDATEVIDEO)
+//			{
+//				videoDto = objectMapper.convertValue(request.getPayload(), VideoDto.class);
+//				if(videoDto == null)
+//		    	{
+//		    		throw new InvalidWorkException(
+//		                    String.format("Payload is empty."));
+//		    	}
+//				res = videoService.updateCurrentVideo(videoDto, request.getUniqueCode());
+//			}
+//			else if(request.getWorkId() == WorkId.DELETEVIDEO)
+//			{
+//				videoDto = objectMapper.convertValue(request.getPayload(), VideoDto.class);
+//				if(videoDto == null)
+//		    	{
+//		    		throw new InvalidWorkException(
+//		                    String.format("Payload is empty."));
+//		    	}
+//				videoService.deleteVideoByUser(videoDto, request.getUniqueCode());
+//			}
+//			else if(request.getWorkId() == WorkId.GETALLVIDEOS)
+//			{
+//				res = videoService.getAllVideoByUser(request.getUniqueCode());
+//			}
+//			else if(request.getWorkId() == WorkId.GETCURRENTVIDEO)
+//			{
+//                res = videoService.getCurrentVideoByUser(request.getUniqueCode());
+//			}
+//			response = new WebsocketResponse<Object>(request, true, res);
+//		}
+		if(request.getWorkType() == WorkType.VIDEO)
 		{
 			VideoDto videoDto = null;
-			if(request.getWorkId() == WorkId.SAVEVIDEO)
+			if(request.getWorkId() == WorkId.SETCURRENTVIDEO)
 			{
 				videoDto = objectMapper.convertValue(request.getPayload(), VideoDto.class);
 				if(videoDto == null)
-		    	{
-		    		throw new InvalidWorkException(
-		                    String.format("Payload is empty."));
-		    	}
-				res = videoService.addVideo(videoDto, request.getUniqueCode());
-			}
-			else if(request.getWorkId() == WorkId.SETCURRENTVIDEO)
-			{
-				videoDto = objectMapper.convertValue(request.getPayload(), VideoDto.class);
-				if(videoDto == null)
-		    	{
-		    		throw new InvalidWorkException(
-		                    String.format("Payload is empty."));
-		    	}
+			    {
+			    	throw new InvalidWorkException(
+			                   String.format("Payload is empty."));
+			    }
 				res = videoService.updateCurrentVideo(videoDto, request.getUniqueCode());
 			}
-			else if(request.getWorkId() == WorkId.UPDATEVIDEO)
+			else if(request.getWorkId() == WorkId.PLAY_PAUSE)
 			{
-				videoDto = objectMapper.convertValue(request.getPayload(), VideoDto.class);
-				if(videoDto == null)
-		    	{
-		    		throw new InvalidWorkException(
-		                    String.format("Payload is empty."));
-		    	}
-				res = videoService.updateCurrentVideo(videoDto, request.getUniqueCode());
+				if(request.getPayload() == Boolean.TRUE)
+				{
+					res = Boolean.TRUE;
+				}
+				else
+				{
+					res = Boolean.FALSE;
+				}
 			}
-			else if(request.getWorkId() == WorkId.DELETEVIDEO)
+			else if(request.getWorkId() == WorkId.PLAYINLOOP)
 			{
-				videoDto = objectMapper.convertValue(request.getPayload(), VideoDto.class);
-				if(videoDto == null)
-		    	{
-		    		throw new InvalidWorkException(
-		                    String.format("Payload is empty."));
-		    	}
-				videoService.deleteVideoByUser(videoDto, request.getUniqueCode());
+				if(request.getPayload() == Boolean.TRUE)
+				{
+					res = Boolean.TRUE;
+				}
+				else
+				{
+					res = Boolean.FALSE;
+				}
 			}
-			else if(request.getWorkId() == WorkId.GETALLVIDEOS)
+			else if(request.getWorkId() == WorkId.MUTEAUDIO)
 			{
-				res = videoService.getAllVideoByUser(request.getUniqueCode());
-			}
-			else if(request.getWorkId() == WorkId.GETCURRENTVIDEO)
-			{
-                res = videoService.getCurrentVideoByUser(request.getUniqueCode());
+				if(request.getPayload() == Boolean.TRUE)
+				{
+					res = Boolean.TRUE;
+				}
+				else
+				{
+					res = Boolean.FALSE;
+				}
 			}
 			response = new WebsocketResponse<Object>(request, true, res);
 		}
