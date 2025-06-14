@@ -149,6 +149,27 @@ public class WebsocketServiceImpl implements WebsocketService {
 					res = Boolean.FALSE;
 				}
 			}
+			else if(request.getWorkId() == WorkId.ISPLAYING)
+			{
+				videoDto = objectMapper.convertValue(request.getPayload(), VideoDto.class);
+				if(videoDto == null)
+			    {
+			    	throw new InvalidWorkException(
+			                   String.format("Payload is empty."));
+			    }
+				res = videoService.updateVideo(videoDto, request.getUniqueCode());
+			}
+			else if(request.getWorkId() == WorkId.ISBUFFERING)
+			{
+				if(request.getPayload() == Boolean.TRUE)
+				{
+					res = Boolean.TRUE;
+				}
+				else
+				{
+					res = Boolean.FALSE;
+				}
+			}
 			response = new WebsocketResponse<Object>(request, true, res);
 		}
 		if(response == null)

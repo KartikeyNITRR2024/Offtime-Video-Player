@@ -152,8 +152,6 @@ public class VideoServiceImpl implements VideoService {
 	@Transactional
 	public VideoDto updateCurrentVideo(VideoDto videoDto, String uniqueCode)
 	{
-		System.out.println(videoDto);
-		System.out.println(uniqueCode);
 		Optional<Video> vidOpt = videoRepository.findById(videoDto.getId());
 		if(vidOpt.isEmpty())
 		{
