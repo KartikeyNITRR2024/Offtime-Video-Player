@@ -40,4 +40,7 @@ public class ConfigTable {
     
     @Column(name = "maxvideosperuser", nullable = false)
 	private Integer maxVideosPerUser;
+    
+    @Column(name = "timezone", nullable = false)
+    private String timeZone;
 }

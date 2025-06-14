@@ -1,9 +1,11 @@
 package com.offtime.videoplayer.pojos;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import com.offtime.videoplayer.enums.WorkId;
 import com.offtime.videoplayer.enums.WorkType;
+import com.offtime.videoplayer.utils.PropertyLoader;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,14 +27,14 @@ public class WebsocketResponse<T> {
 
 
     public WebsocketResponse() {
-        this.timestamp = LocalDateTime.now();
+        this.timestamp = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
     }
 
     public WebsocketResponse(WebsocketResponse<T> websocketResponse) {
         this.workType = websocketResponse.getWorkType();
         this.workId = websocketResponse.getWorkId();
         this.uniqueCode = websocketResponse.getUniqueCode();
-        this.timestamp = LocalDateTime.now();
+        this.timestamp = LocalDateTime.now(ZoneId.of(PropertyLoader.getConfigTable().getTimeZone()));
     }
 
     public WebsocketResponse(WebsocketResponse<T> websocketResponse, Boolean success, T data) {
@@ -41,7 +43,7 @@ public class WebsocketResponse<T> {
         this.uniqueCode = websocketResponse.getUniqueCode();
         this.success = success;
         this.data = data;
-        this.timestamp = LocalDateTime.now();
+        this.timestamp = LocalDateTime.now(ZoneId.of(PropertyLoader.getConfigTable().getTimeZone()));
     }
 
     public WebsocketResponse(WebsocketResponse<T> websocketResponse, Boolean success, String message) {
@@ -50,6 +52,6 @@ public class WebsocketResponse<T> {
         this.uniqueCode = websocketResponse.getUniqueCode();
         this.success = success;
         this.message = message;
-        this.timestamp = LocalDateTime.now();
+        this.timestamp = LocalDateTime.now(ZoneId.of(PropertyLoader.getConfigTable().getTimeZone()));
     }
 }

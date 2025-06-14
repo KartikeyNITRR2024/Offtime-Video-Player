@@ -16,35 +16,46 @@ import com.offtime.videoplayer.repos.ConfigUsedRepo;
 
 @Component
 public class PropertyLoader {
-	 private Long configId;
-	 public ConfigTable configTable;
-	 private static final Logger logger = LoggerFactory.getLogger(PropertyLoader.class);
 
-	    @Autowired
-	    private ConfigTableRepo configTableRepo;
-	    
-	    @Autowired
-	    private ConfigUsedRepo configUsedRepo;
+    private static final Logger logger = LoggerFactory.getLogger(PropertyLoader.class);
 
-	    public void updatePropertyLoader() {
-	        try {
-	        	logger.info("Fetching currently config used.");
-	            ConfigUsed configUsed = configUsedRepo.findById(1L).get();
-//	        	ConfigUsed configUsed = new ConfigUsed(1L, 1);
-	            configId = configUsed.getId();
-	            logger.debug("Fetching configuration for configId: {}", configId);
-	            Optional<ConfigTable> configTableOpt = configTableRepo.findById(configId);
-	            if (configTableOpt.isPresent()) {
-	            	configTable = configTableOpt.get();
-	                logger.info("Configurtion values are: {}", configTable);
-	            } else {
-		            configTable = new ConfigTable(1L, 10, 5, 31536000, 2, 50);
-	                logger.warn("No configuration found for configId: {}", configId);
-	            }
-	            logger.debug("All Configurations are: {}", configTable);
-	        } catch (Exception e) {
-	            configTable = new ConfigTable(1L, 10, 5, 31536000, 2, 50);
-	            logger.error("An error occurred while fetching configuration: {}", e.getMessage(), e);
-	        }
-	    }
+    public static ConfigTable configTable;
+
+    private static ConfigTableRepo configTableRepo;
+    private static ConfigUsedRepo configUsedRepo;
+
+    @Autowired
+    public PropertyLoader(ConfigTableRepo configTableRepo, ConfigUsedRepo configUsedRepo) {
+        PropertyLoader.configTableRepo = configTableRepo;
+        PropertyLoader.configUsedRepo = configUsedRepo;
+        updatePropertyLoader();
+    }
+
+    public static void updatePropertyLoader() {
+        try {
+            logger.info("Fetching currently config used.");
+            ConfigUsed configUsed = configUsedRepo.findById(1L).orElse(null);
+
+            if (configUsed == null) {
+                logger.warn("ConfigUsed not found. Using default.");
+                configTable = getDefaultConfig();
+                return;
+            }
+
+            configTable = configTableRepo.findById(configUsed.getId()).orElse(getDefaultConfig());
+
+            logger.info("Loaded configuration: {}", configTable);
+        } catch (Exception e) {
+            logger.error("Failed to load configuration", e);
+            configTable = getDefaultConfig();
+        }
+    }
+
+    private static ConfigTable getDefaultConfig() {
+        return new ConfigTable(1L, 10, 5, 31536000, 2, 50, "Asia/Kolkata");
+    }
+
+    public static ConfigTable getConfigTable() {
+        return configTable;
+    }
 }
